@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Student Management System - Administrator Dashboard">
+  <title>Dashboard | Student Management System</title>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo-icon">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-title">Student MS</span>
+          <span class="sidebar-subtitle">Academic Admin</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Navigation</div>
+        
+        <a href="dashboard.html" class="nav-item active">
+          <span class="nav-icon"><i class="fa-solid fa-house"></i></span>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="students.html" class="nav-item">
+          <span class="nav-icon"><i class="fa-solid fa-user-graduate"></i></span>
+          <span>Students</span>
+          <span class="nav-badge" id="sidebarStudentCount">5</span>
+        </a>
+
+        <a href="add-student.html" class="nav-item">
+          <span class="nav-icon"><i class="fa-solid fa-user-plus"></i></span>
+          <span>Add Student</span>
+        </a>
+
+        <a href="students.html?focus=search" class="nav-item">
+          <span class="nav-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+          <span>Search Student</span>
+        </a>
+
+        <div class="nav-section-title" style="margin-top: 1rem;">System</div>
+
+        <a href="#" class="nav-item logout-nav-item action-logout">
+          <span class="nav-icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
+          <span>Logout</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="user-avatar">AD</div>
+          <div class="user-info">
+            <div class="user-name">Administrator</div>
+            <div class="user-role"><span class="status-dot"></span> Online</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+      <!-- Top Navbar -->
+      <header class="top-navbar">
+        <div class="navbar-left">
+          <button type="button" class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Toggle Navigation">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="page-breadcrumb">
+            <span>Portal</span>
+            <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i>
+            <span class="current">Dashboard Overview</span>
+          </div>
+        </div>
+
+        <div class="navbar-right">
+          <div class="nav-quick-search">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="globalQuickSearch" placeholder="Quick search students..." aria-label="Quick search">
+          </div>
+
+          <a href="add-student.html" class="btn-header-action btn-primary">
+            <i class="fa-solid fa-plus"></i>
+            <span>Add Student</span>
+          </a>
+        </div>
+      </header>
+
+      <!-- Page Container -->
+      <main class="page-container">
+        <!-- Welcome Banner -->
+        <section class="welcome-banner">
+          <div class="welcome-content">
+            <h2>Welcome, Admin 👋</h2>
+            <p>
+              Here is your college student enrollment overview, faculty distribution, and recent student activities for today.
+            </p>
+            <div class="welcome-meta">
+              <div class="welcome-meta-item">
+                <i class="fa-regular fa-calendar"></i>
+                <span id="bannerDate">Academic Session 2024–2025</span>
+              </div>
+              <div class="welcome-meta-item">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Admin Access: Active</span>
+              </div>
+            </div>
+          </div>
+          <div class="banner-badge">
+            <div class="label">System Status</div>
+            <div class="value">Verified &bull; Online</div>
+          </div>
+        </section>
+
+        <!-- Stats Cards Grid -->
+        <section class="stats-grid" aria-label="Key Statistics">
+          <!-- Total Students -->
+          <div class="stat-card card-primary">
+            <div class="stat-info">
+              <span class="stat-label">Total Students</span>
+              <span class="stat-value" id="statTotalStudents">0</span>
+              <span class="stat-trend trend-info">
+                <i class="fa-solid fa-users"></i> All Enrolled Records
+              </span>
+            </div>
+            <div class="stat-icon-wrapper">
+              <i class="fa-solid fa-user-graduate"></i>
+            </div>
+          </div>
+
+          <!-- Male Students -->
+          <div class="stat-card card-blue">
+            <div class="stat-info">
+              <span class="stat-label">Male Students</span>
+              <span class="stat-value" id="statMaleStudents">0</span>
+              <span class="stat-trend trend-up" id="statMalePercentage">
+                0% of total
+              </span>
+            </div>
+            <div class="stat-icon-wrapper">
+              <i class="fa-solid fa-mars"></i>
+            </div>
+          </div>
+
+          <!-- Female Students -->
+          <div class="stat-card card-purple">
+            <div class="stat-info">
+              <span class="stat-label">Female Students</span>
+              <span class="stat-value" id="statFemaleStudents">0</span>
+              <span class="stat-trend trend-up" id="statFemalePercentage">
+                0% of total
+              </span>
+            </div>
+            <div class="stat-icon-wrapper">
+              <i class="fa-solid fa-venus"></i>
+            </div>
+          </div>
+
+          <!-- Departments -->
+          <div class="stat-card card-emerald">
+            <div class="stat-info">
+              <span class="stat-label">Departments</span>
+              <span class="stat-value" id="statDepartments">0</span>
+              <span class="stat-trend trend-info">
+                <i class="fa-solid fa-building-columns"></i> Active Disciplines
+              </span>
+            </div>
+            <div class="stat-icon-wrapper">
+              <i class="fa-solid fa-building-columns"></i>
+            </div>
+          </div>
+        </section>
+
+        <!-- Charts Grid -->
+        <section class="dashboard-grid-2">
+          <!-- Department Distribution -->
+          <div class="card-panel">
+            <div class="card-panel-header">
+              <div class="card-panel-title">
+                <i class="fa-solid fa-chart-column"></i>
+                <span>Department Distribution</span>
+              </div>
+              <span style="font-size: 0.8rem; color: var(--slate-400);">Current Enrolment</span>
+            </div>
+            <div class="chart-container">
+              <canvas id="departmentChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Gender Ratio -->
+          <div class="card-panel">
+            <div class="card-panel-header">
+              <div class="card-panel-title">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Gender Ratio</span>
+              </div>
+              <span style="font-size: 0.8rem; color: var(--slate-400);">Demographics</span>
+            </div>
+            <div class="chart-container">
+              <canvas id="genderChart"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <!-- Quick Actions & Recently Added Students -->
+        <section class="card-panel" style="margin-bottom: 2rem;">
+          <div class="card-panel-header">
+            <div class="card-panel-title">
+              <i class="fa-solid fa-clock-rotate-left"></i>
+              <span>Recently Added Students</span>
+            </div>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <button type="button" id="exportCsvBtn" class="btn-header-action btn-outline btn-sm">
+                <i class="fa-solid fa-file-csv"></i> Export CSV
+              </button>
+              <a href="students.html" class="btn-header-action btn-primary btn-sm">
+                <span>View All Students</span>
+                <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="custom-table" aria-label="Recently Added Students">
+              <thead>
+                <tr>
+                  <th>Student ID</th>
+                  <th>Full Name</th>
+                  <th>Gender</th>
+                  <th>Department</th>
+                  <th>Registration Date</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="recentStudentsBody">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Student Profile View Modal -->
+  <div class="modal-overlay" id="studentProfileModal" role="dialog" aria-modal="true" aria-labelledby="profileModalTitle">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title" id="profileModalTitle">
+          <i class="fa-solid fa-id-badge" style="color: var(--primary-600);"></i>
+          <span>Student Profile Card</span>
+        </div>
+        <button type="button" class="modal-close-btn modal-close-trigger" aria-label="Close modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="student-profile-banner">
+          <div class="student-profile-avatar" id="viewModalAvatar">AK</div>
+          <div class="student-profile-info">
+            <span class="student-profile-id-badge" id="viewModalIdBadge">STU-2024-001</span>
+            <h3 id="viewModalName">Arun Kumar</h3>
+            <div>
+              <span class="badge badge-dept" id="viewModalDeptBadge">Computer Science</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-details-grid">
+          <div class="profile-detail-card">
+            <div class="profile-detail-label">
+              <i class="fa-solid fa-venus-mars"></i> Gender
+            </div>
+            <div class="profile-detail-value" id="viewModalGender">Male</div>
+          </div>
+
+          <div class="profile-detail-card">
+            <div class="profile-detail-label">
+              <i class="fa-regular fa-calendar"></i> Date of Birth (Age)
+            </div>
+            <div class="profile-detail-value">
+              <span id="viewModalDob">Apr 15, 2003</span> 
+              <span style="color: var(--slate-400); font-size: 0.82rem;" id="viewModalAge">(21 yrs)</span>
+            </div>
+          </div>
+
+          <div class="profile-detail-card">
+            <div class="profile-detail-label">
+              <i class="fa-solid fa-building-columns"></i> Department
+            </div>
+            <div class="profile-detail-value" id="viewModalDepartment">Computer Science</div>
+          </div>
+
+          <div class="profile-detail-card">
+            <div class="profile-detail-label">
+              <i class="fa-solid fa-envelope"></i> Email Address
+            </div>
+            <div class="profile-detail-value" id="viewModalEmail">arun.kumar@college.edu</div>
+          </div>
+
+          <div class="profile-detail-card">
+            <div class="profile-detail-label">
+              <i class="fa-solid fa-phone"></i> Phone Number
+            </div>
+            <div class="profile-detail-value" id="viewModalPhone">9876543210</div>
+          </div>
+
+          <div class="profile-detail-card">
+            <div class="profile-detail-label">
+              <i class="fa-solid fa-location-dot"></i> Residential Address
+            </div>
+            <div class="profile-detail-value" id="viewModalAddress">124 Park Avenue, Anna Nagar, Chennai</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-header-action btn-outline modal-close-trigger">Close</button>
+        <button type="button" class="btn-header-action btn-primary" id="viewModalEditLink">
+          <i class="fa-solid fa-pen-to-square"></i> Edit Details
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Chart.js & Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Student Management System - Register New Student">
+  <title>Add Student | Student Management System</title>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo-icon">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-title">Student MS</span>
+          <span class="sidebar-subtitle">Academic Admin</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Navigation</div>
+        
+        <a href="dashboard.html" class="nav-item">
+          <span class="nav-icon"><i class="fa-solid fa-house"></i></span>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="students.html" class="nav-item">
+          <span class="nav-icon"><i class="fa-solid fa-user-graduate"></i></span>
+          <span>Students</span>
+          <span class="nav-badge" id="sidebarStudentCount">5</span>
+        </a>
+
+        <a href="add-student.html" class="nav-item active">
+          <span class="nav-icon"><i class="fa-solid fa-user-plus"></i></span>
+          <span>Add Student</span>
+        </a>
+
+        <a href="students.html?focus=search" class="nav-item">
+          <span class="nav-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+          <span>Search Student</span>
+        </a>
+
+        <div class="nav-section-title" style="margin-top: 1rem;">System</div>
+
+        <a href="#" class="nav-item logout-nav-item action-logout">
+          <span class="nav-icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
+          <span>Logout</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="user-avatar">AD</div>
+          <div class="user-info">
+            <div class="user-name">Administrator</div>
+            <div class="user-role"><span class="status-dot"></span> Online</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+      <!-- Top Navbar -->
+      <header class="top-navbar">
+        <div class="navbar-left">
+          <button type="button" class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Toggle Navigation">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="page-breadcrumb">
+            <a href="dashboard.html">Dashboard</a>
+            <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i>
+            <a href="students.html">Students</a>
+            <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i>
+            <span class="current">Add Student</span>
+          </div>
+        </div>
+
+        <div class="navbar-right">
+          <a href="students.html" class="btn-header-action btn-outline">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span>Back to Students List</span>
+          </a>
+        </div>
+      </header>
+
+      <!-- Page Container -->
+      <main class="page-container" style="max-width: 960px;">
+        <!-- Page Header -->
+        <div class="page-header">
+          <div class="page-header-title">
+            <h1>Register New Student</h1>
+            <p>Complete the student admission registration form below to add a student to the system.</p>
+          </div>
+        </div>
+
+        <!-- Registration Form Card -->
+        <div class="form-card">
+          <div class="form-header-badge">
+            <i class="fa-solid fa-address-card"></i>
+            <span>Admission Form &bull; Academic Session 2024-2025</span>
+          </div>
+
+          <form id="addStudentForm" novalidate>
+            <div class="form-grid">
+              
+              <!-- Student ID -->
+              <div class="form-group">
+                <label class="form-label" for="studentId">
+                  Student ID <span class="required-star">*</span>
+                </label>
+                <div style="display: flex; gap: 0.5rem;">
+                  <input 
+                    type="text" 
+                    id="studentId" 
+                    name="studentId" 
+                    class="form-control" 
+                    placeholder="e.g. STU-2024-006" 
+                    required
+                  >
+                  <button 
+                    type="button" 
+                    id="btnRegenerateId" 
+                    class="btn-header-action btn-outline btn-sm" 
+                    title="Generate Next Available ID"
+                    style="white-space: nowrap;"
+                  >
+                    <i class="fa-solid fa-arrows-rotate"></i> Auto ID
+                  </button>
+                </div>
+                <div class="form-error-feedback" id="studentIdError"></div>
+                <span class="form-hint">Unique college enrolment registration number</span>
+              </div>
+
+              <!-- Full Name -->
+              <div class="form-group">
+                <label class="form-label" for="fullName">
+                  Full Name <span class="required-star">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  id="fullName" 
+                  name="fullName" 
+                  class="form-control" 
+                  placeholder="e.g. Rajesh Kumar" 
+                  required
+                >
+                <div class="form-error-feedback" id="fullNameError"></div>
+                <span class="form-hint">First and last name as per legal records</span>
+              </div>
+
+              <!-- Gender Selection -->
+              <div class="form-group">
+                <label class="form-label">
+                  Gender <span class="required-star">*</span>
+                </label>
+                <div class="radio-group">
+                  <label class="radio-label">
+                    <input type="radio" name="gender" value="Male" checked>
+                    <span>Male</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="gender" value="Female">
+                    <span>Female</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Date of Birth -->
+              <div class="form-group">
+                <label class="form-label" for="dob">
+                  Date of Birth <span class="required-star">*</span>
+                </label>
+                <input 
+                  type="date" 
+                  id="dob" 
+                  name="dob" 
+                  class="form-control" 
+                  required
+                >
+                <div class="form-error-feedback" id="dobError"></div>
+                <span class="form-hint">Student must be at least 15 years old</span>
+              </div>
+
+              <!-- Department -->
+              <div class="form-group col-span-2">
+                <label class="form-label" for="department">
+                  Department / Degree Program <span class="required-star">*</span>
+                </label>
+                <select id="department" name="department" class="form-control" required>
+                  <option value="">-- Choose Enrolled Department --</option>
+                  <option value="Computer Science">Computer Science</option>
+                  <option value="Data Science">Data Science</option>
+                  <option value="Information Technology">Information Technology</option>
+                  <option value="Computer Applications">Computer Applications</option>
+                  <option value="Electrical Engineering">Electrical Engineering</option>
+                  <option value="Mechanical Engineering">Mechanical Engineering</option>
+                  <option value="Civil Engineering">Civil Engineering</option>
+                </select>
+                <div class="form-error-feedback" id="departmentError"></div>
+              </div>
+
+              <!-- Email Address -->
+              <div class="form-group">
+                <label class="form-label" for="email">
+                  Email Address <span class="required-star">*</span>
+                </label>
+                <input 
+                  type="email" 
+                  id="email" 
+                  name="email" 
+                  class="form-control" 
+                  placeholder="student.name@college.edu" 
+                  required
+                >
+                <div class="form-error-feedback" id="emailError"></div>
+                <span class="form-hint">Official college or personal email</span>
+              </div>
+
+              <!-- Phone Number -->
+              <div class="form-group">
+                <label class="form-label" for="phone">
+                  Phone Number <span class="required-star">*</span>
+                </label>
+                <input 
+                  type="tel" 
+                  id="phone" 
+                  name="phone" 
+                  class="form-control" 
+                  placeholder="10-digit mobile number" 
+                  maxlength="10" 
+                  required
+                >
+                <div class="form-error-feedback" id="phoneError"></div>
+                <span class="form-hint">10 digits without country code or spaces</span>
+              </div>
+
+              <!-- Address -->
+              <div class="form-group col-span-2">
+                <label class="form-label" for="address">
+                  Permanent Residential Address <span class="required-star">*</span>
+                </label>
+                <textarea 
+                  id="address" 
+                  name="address" 
+                  class="form-control" 
+                  rows="3" 
+                  placeholder="Door No., Street Name, Area, City, Pincode" 
+                  required
+                ></textarea>
+                <div class="form-error-feedback" id="addressError"></div>
+              </div>
+
+            </div>
+
+            <!-- Form Action Buttons -->
+            <div class="form-actions">
+              <button type="button" id="btnClearForm" class="btn-header-action btn-outline">
+                <i class="fa-solid fa-eraser"></i>
+                <span>Clear Form</span>
+              </button>
+
+              <button type="submit" id="btnSubmitStudent" class="btn-header-action btn-primary" style="padding: 0.75rem 1.75rem;">
+                <i class="fa-solid fa-user-plus"></i>
+                <span>Add Student</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Require admin authentication
+      requireAuth();
+
+      const form = document.getElementById('addStudentForm');
+      const studentIdInput = document.getElementById('studentId');
+      const btnRegenerateId = document.getElementById('btnRegenerateId');
+      const btnClearForm = document.getElementById('btnClearForm');
+      const dobInput = document.getElementById('dob');
+
+      // Restrict DOB to max today - 15 years
+      const today = new Date();
+      const maxDate = new Date(today.getFullYear() - 15, today.getMonth(), today.getDate()).toISOString().split('T')[0];
+      const minDate = new Date(today.getFullYear() - 70, today.getMonth(), today.getDate()).toISOString().split('T')[0];
+      if (dobInput) {
+        dobInput.max = maxDate;
+        dobInput.min = minDate;
+      }
+
+      // Generate initial ID
+      function setNextId() {
+        if (studentIdInput) {
+          studentIdInput.value = generateNextStudentId();
+        }
+      }
+      setNextId();
+
+      if (btnRegenerateId) {
+        btnRegenerateId.addEventListener('click', () => {
+          setNextId();
+          showToast('Generated next available student ID', 'info', 2000);
+        });
+      }
+
+      // Clear Form button
+      if (btnClearForm) {
+        btnClearForm.addEventListener('click', () => {
+          form.reset();
+          clearValidationErrors();
+          setNextId();
+          showToast('Form has been cleared.', 'info', 2000);
+        });
+      }
+
+      function clearValidationErrors() {
+        document.querySelectorAll('#addStudentForm .form-control').forEach(el => {
+          el.classList.remove('is-invalid');
+        });
+        document.querySelectorAll('#addStudentForm .form-error-feedback').forEach(el => {
+          el.classList.remove('visible');
+          el.textContent = '';
+        });
+      }
+
+      function showFieldError(inputId, message) {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+        input.classList.add('is-invalid');
+        const errorEl = document.getElementById(`${inputId}Error`);
+        if (errorEl) {
+          errorEl.textContent = message;
+          errorEl.classList.add('visible');
+        }
+      }
+
+      // Handle Submit
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        clearValidationErrors();
+
+        const id = studentIdInput.value.trim();
+        const fullName = document.getElementById('fullName').value.trim();
+        const gender = document.querySelector('input[name="gender"]:checked')?.value || 'Male';
+        const dob = document.getElementById('dob').value;
+        const department = document.getElementById('department').value;
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const address = document.getElementById('address').value.trim();
+
+        let isValid = true;
+
+        // Validate Student ID
+        if (!id) {
+          showFieldError('studentId', 'Student ID is required.');
+          isValid = false;
+        } else if (getStudentById(id)) {
+          showFieldError('studentId', 'A student with this ID already exists. Please use a unique ID.');
+          isValid = false;
+        }
+
+        // Validate Full Name
+        if (!fullName || fullName.length < 2) {
+          showFieldError('fullName', 'Please enter a valid full name (at least 2 letters).');
+          isValid = false;
+        }
+
+        // Validate DOB
+        if (!dob) {
+          showFieldError('dob', 'Date of birth is required.');
+          isValid = false;
+        } else {
+          const birthDate = new Date(dob);
+          if (birthDate > new Date(maxDate)) {
+            showFieldError('dob', 'Student must be at least 15 years old.');
+            isValid = false;
+          }
+        }
+
+        // Validate Department
+        if (!department) {
+          showFieldError('department', 'Please select an academic department.');
+          isValid = false;
+        }
+
+        // Validate Email
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email || !emailPattern.test(email)) {
+          showFieldError('email', 'Please provide a valid email address.');
+          isValid = false;
+        }
+
+        // Validate Phone (10 digits)
+        const phoneDigits = phone.replace(/\D/g, '');
+        if (phoneDigits.length !== 10) {
+          showFieldError('phone', 'Please enter a valid 10-digit mobile number.');
+          isValid = false;
+        }
+
+        // Validate Address
+        if (!address || address.length < 5) {
+          showFieldError('address', 'Please provide a complete residential address.');
+          isValid = false;
+        }
+
+        if (!isValid) {
+          showToast('Please correct the highlighted errors before submitting.', 'warning');
+          return;
+        }
+
+        // Create new student record
+        const newStudent = {
+          id: id,
+          name: fullName,
+          gender: gender,
+          dob: dob,
+          department: department,
+          email: email,
+          phone: phoneDigits,
+          address: address
+        };
+
+        const submitBtn = document.getElementById('btnSubmitStudent');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Adding Student...';
+
+        addStudent(newStudent);
+
+        showToast('Student added successfully!', 'success');
+
+        // Redirect to students list after brief delay
+        setTimeout(() => {
+          window.location.href = 'students.html';
+        }, 800);
+      });
+    });
+  </script>
+</body>
+</html>

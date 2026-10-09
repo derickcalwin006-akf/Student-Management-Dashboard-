@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Student Management System - Student Records & Profiles">
+  <title>Manage Students | Student Management System</title>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo-icon">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-title">Student MS</span>
+          <span class="sidebar-subtitle">Academic Admin</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Navigation</div>
+        
+        <a href="dashboard.html" class="nav-item">
+          <span class="nav-icon"><i class="fa-solid fa-house"></i></span>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="students.html" class="nav-item active">
+          <span class="nav-icon"><i class="fa-solid fa-user-graduate"></i></span>
+          <span>Students</span>
+          <span class="nav-badge" id="sidebarStudentCount">5</span>
+        </a>
+
+        <a href="add-student.html" class="nav-item">
+          <span class="nav-icon"><i class="fa-solid fa-user-plus"></i></span>
+          <span>Add Student</span>
+        </a>
+
+        <a href="students.html?focus=search" class="nav-item">
+          <span class="nav-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+          <span>Search Student</span>
+        </a>
+
+        <div class="nav-section-title" style="margin-top: 1rem;">System</div>
+
+        <a href="#" class="nav-item logout-nav-item action-logout">
+          <span class="nav-icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
+          <span>Logout</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="user-avatar">AD</div>
+          <div class="user-info">
+            <div class="user-name">Administrator</div>
+            <div class="user-role"><span class="status-dot"></span> Online</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+      <!-- Top Navbar -->
+      <header class="top-navbar">
+        <div class="navbar-left">
+          <button type="button" class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Toggle Navigation">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="page-breadcrumb">
+            <a href="dashboard.html">Dashboard</a>
+            <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i>
+            <span class="current">Students Management</span>
+          </div>
+        </div>
+
+        <div class="navbar-right">
+          <button type="button" class="btn-header-action btn-outline" onclick="exportStudentsToCSV()">
+            <i class="fa-solid fa-file-arrow-down"></i>
+            <span>Export CSV</span>
+          </button>
+          <a href="add-student.html" class="btn-header-action btn-primary">
+            <i class="fa-solid fa-user-plus"></i>
+            <span>Add Student</span>
+          </a>
+        </div>
+      </header>
+
+      <!-- Page Container -->
+      <main class="page-container">
+        <!-- Page Header -->
+        <div class="page-header">
+          <div class="page-header-title">
+            <h1>Students Directory</h1>
+            <p>Comprehensive overview of student enrolments, academic details, and contact information.</p>
+          </div>
+          <div class="page-header-actions">
+            <a href="add-student.html" class="btn-header-action btn-primary">
+              <i class="fa-solid fa-plus"></i> Register New Student
+            </a>
+          </div>
+        </div>
+
+        <!-- Table Card with Search & Filters -->
+        <div class="table-card">
+          <!-- Filter & Search Bar -->
+          <div class="table-filter-bar">
+            <div class="filter-group-left">
+              <div class="table-search-input-wrap">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input 
+                  type="text" 
+                  id="tableSearchInput" 
+                  placeholder="Search by name, ID, department, email, phone..." 
+                  aria-label="Search students"
+                >
+                <button type="button" id="clearSearchBtn" class="clear-search-btn" title="Clear Search">
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="filter-group-right">
+              <!-- Department Filter -->
+              <select id="departmentFilter" class="filter-select" aria-label="Filter by department">
+                <option value="all">All Departments</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Data Science">Data Science</option>
+                <option value="Information Technology">Information Technology</option>
+                <option value="Computer Applications">Computer Applications</option>
+                <option value="Electrical Engineering">Electrical Engineering</option>
+                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                <option value="Civil Engineering">Civil Engineering</option>
+              </select>
+
+              <!-- Gender Filter -->
+              <select id="genderFilter" class="filter-select" aria-label="Filter by gender">
+                <option value="all">All Genders</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+
+              <!-- Sort Option -->
+              <select id="sortFilter" class="filter-select" aria-label="Sort students">
+                <option value="id-asc">Sort: ID (Ascending)</option>
+                <option value="id-desc">Sort: ID (Descending)</option>
+                <option value="name-asc">Sort: Name (A &rarr; Z)</option>
+                <option value="name-desc">Sort: Name (Z &rarr; A)</option>
+                <option value="dob-asc">Sort: Age (Oldest First)</option>
+                <option value="dob-desc">Sort: Age (Youngest First)</option>
+              </select>
+
+              <button type="button" id="resetFiltersBtn" class="btn-header-action btn-outline btn-sm" title="Reset all filters">
+                <i class="fa-solid fa-rotate-left"></i> Reset
+              </button>
+            </div>
+          </div>
+
+          <!-- Students Table -->
+          <div class="table-responsive" id="studentsTableWrapper">
+            <table class="custom-table" aria-label="Students List">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Gender</th>
+                  <th>Date of Birth</th>
+                  <th>Department</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Address</th>
+                  <th style="text-align: center;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="studentsTableBody">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Empty State (Shown when no results match) -->
+          <div class="table-empty-state" id="tableEmptyState" style="display: none;">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <h3>No student records found</h3>
+            <p>We couldn't find any students matching your search criteria or selected filters.</p>
+            <button type="button" class="btn-header-action btn-outline" onclick="resetAllFilters()">
+              <i class="fa-solid fa-arrow-rotate-left"></i> Clear Filters
+            </button>
+          </div>
+
+          <!-- Table Footer Counter -->
+          <div class="table-footer">
+            <span id="tableCountIndicator">Showing 0 of 0 students</span>
+            <span style="color: var(--slate-400); font-size: 0.8rem;">
+              <i class="fa-solid fa-circle-info"></i> Click actions to view, edit, or delete records
+            </span>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- View Student Profile Modal -->
+  <div class="modal-overlay" id="studentProfileModal" role="dialog" aria-modal="true" aria-labelledby="viewModalTitle">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title" id="viewModalTitle">
+          <i class="fa-solid fa-id-badge" style="color: var(--primary-600);"></i>
+          <span>Student Profile Card</span>
+        </div>
+        <button type="button" class="modal-close-btn modal-close-trigger" aria-label="Close modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="student-profile-banner">
+          <div class="student-profile-avatar" id="viewModalAvatar">AK</div>
+          <div class="student-profile-info">
+            <span class="student-profile-id-badge" id="viewModalIdBadge">STU-2024-001</span>
+            <h3 id="viewModalName">Arun Kumar</h3>
+            <div>
+              <span class="badge badge-dept" id="viewModalDeptBadge">Computer Science</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-details-grid">
+          <div class="profile-detail-card">
+            <div class="profile-detail-label">
+              <i class="fa-solid fa-venus-mars"></i> Gender
+            </div>
+            <div class="profile-detail-value" id="viewModalGender">Male</div>
+          </div>
+
+          <div class="profile-detail-card">
+            <div class="profile-detail-label">
+              <i class="fa-regular fa-calendar"></i> Date of Birth (Age)
+            </div>
+            <div class="profile-detail-value">
+              <span id="viewModalDob">Apr 15, 2003</span> 
+              <span style="color: var(--slate-400); font-size: 0.82rem;" id="viewModalAge">(21 yrs)</span>
+            </div>
+          </div>
+
+          <div class="profile-detail-card">
+            <div class="profile-detail-label">
+              <i class="fa-solid fa-building-columns"></i> Department
+            </div>
+            <div class="profile-detail-value" id="viewModalDepartment">Computer Science</div>
+          </div>
+
+          <div class="profile-detail-card">
+            <div class="profile-detail-label">
+              <i class="fa-solid fa-envelope"></i> Email Address
+            </div>
+            <div class="profile-detail-value" id="viewModalEmail">arun.kumar@college.edu</div>
+          </div>
+
+          <div class="profile-detail-card">
+            <div class="profile-detail-label">
+              <i class="fa-solid fa-phone"></i> Phone Number
+            </div>
+            <div class="profile-detail-value" id="viewModalPhone">9876543210</div>
+          </div>
+
+          <div class="profile-detail-card">
+            <div class="profile-detail-label">
+              <i class="fa-solid fa-location-dot"></i> Address
+            </div>
+            <div class="profile-detail-value" id="viewModalAddress">124 Park Avenue, Anna Nagar, Chennai</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-header-action btn-outline modal-close-trigger">Close</button>
+        <button type="button" class="btn-header-action btn-primary" id="viewModalEditBtn">
+          <i class="fa-solid fa-pen-to-square"></i> Edit Details
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Student Modal -->
+  <div class="modal-overlay" id="editStudentModal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title" id="editModalTitle">
+          <i class="fa-solid fa-user-pen" style="color: var(--primary-600);"></i>
+          <span>Edit Student Information</span>
+        </div>
+        <button type="button" class="modal-close-btn modal-close-trigger" aria-label="Close modal">&times;</button>
+      </div>
+
+      <form id="editStudentForm" novalidate>
+        <div class="modal-body">
+          <div class="form-grid">
+            <!-- Student ID (Read-only) -->
+            <div class="form-group">
+              <label class="form-label" for="editStudentId">Student ID</label>
+              <input type="text" id="editStudentId" class="form-control" readonly>
+              <span class="form-hint">System assigned registration number</span>
+            </div>
+
+            <!-- Full Name -->
+            <div class="form-group">
+              <label class="form-label" for="editFullName">
+                Full Name <span class="required-star">*</span>
+              </label>
+              <input type="text" id="editFullName" class="form-control" required placeholder="Enter student's full name">
+              <div class="form-error-feedback" id="editFullNameError"></div>
+            </div>
+
+            <!-- Gender -->
+            <div class="form-group">
+              <label class="form-label" for="editGender">
+                Gender <span class="required-star">*</span>
+              </label>
+              <select id="editGender" class="form-control" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+
+            <!-- Date of Birth -->
+            <div class="form-group">
+              <label class="form-label" for="editDob">
+                Date of Birth <span class="required-star">*</span>
+              </label>
+              <input type="date" id="editDob" class="form-control" required>
+              <div class="form-error-feedback" id="editDobError"></div>
+            </div>
+
+            <!-- Department -->
+            <div class="form-group col-span-2">
+              <label class="form-label" for="editDepartment">
+                Department <span class="required-star">*</span>
+              </label>
+              <select id="editDepartment" class="form-control" required>
+                <option value="">-- Select Department --</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Data Science">Data Science</option>
+                <option value="Information Technology">Information Technology</option>
+                <option value="Computer Applications">Computer Applications</option>
+                <option value="Electrical Engineering">Electrical Engineering</option>
+                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                <option value="Civil Engineering">Civil Engineering</option>
+              </select>
+              <div class="form-error-feedback" id="editDepartmentError"></div>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+              <label class="form-label" for="editEmail">
+                Email Address <span class="required-star">*</span>
+              </label>
+              <input type="email" id="editEmail" class="form-control" placeholder="name@college.edu" required>
+              <div class="form-error-feedback" id="editEmailError"></div>
+            </div>
+
+            <!-- Phone -->
+            <div class="form-group">
+              <label class="form-label" for="editPhone">
+                Phone Number <span class="required-star">*</span>
+              </label>
+              <input type="tel" id="editPhone" class="form-control" placeholder="10-digit mobile number" maxlength="10" required>
+              <div class="form-error-feedback" id="editPhoneError"></div>
+            </div>
+
+            <!-- Address -->
+            <div class="form-group col-span-2">
+              <label class="form-label" for="editAddress">
+                Address <span class="required-star">*</span>
+              </label>
+              <textarea id="editAddress" class="form-control" rows="2" placeholder="Residential Street, Area, City" required></textarea>
+              <div class="form-error-feedback" id="editAddressError"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-header-action btn-outline modal-close-trigger">Cancel</button>
+          <button type="submit" class="btn-header-action btn-primary">
+            <i class="fa-solid fa-floppy-disk"></i> Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete Student Confirmation Modal -->
+  <div class="modal-overlay" id="deleteConfirmModal" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+    <div class="modal-dialog" style="max-width: 480px;">
+      <div class="modal-header">
+        <div class="modal-title" id="deleteModalTitle" style="color: var(--rose-600);">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span>Confirm Record Deletion</span>
+        </div>
+        <button type="button" class="modal-close-btn modal-close-trigger" aria-label="Close modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="delete-modal-content">
+          <div class="delete-warning-icon">
+            <i class="fa-solid fa-trash-can"></i>
+          </div>
+          <h3>Are you sure?</h3>
+          <p>
+            You are about to remove <strong id="deleteTargetName">Student Name</strong> (<span id="deleteTargetId" style="font-family: var(--font-mono);">ID</span>). This action will permanently remove the record from LocalStorage and cannot be undone.
+          </p>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="justify-content: center; gap: 1rem;">
+        <button type="button" class="btn-header-action btn-outline modal-close-trigger">Cancel</button>
+        <button type="button" class="btn-header-action btn-danger" id="confirmDeleteBtn">
+          <i class="fa-solid fa-trash-can"></i> Yes, Delete Student
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/students.js"></script>
+</body>
+</html>
